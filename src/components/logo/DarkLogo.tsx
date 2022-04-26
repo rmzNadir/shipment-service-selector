@@ -9,9 +9,9 @@ export const DarkLogo = () => {
       x="0px"
       y="0px"
       width="240"
-      height="45"
-      viewBox="0 0 240 45"
-      enableBackground="new 0 0 240 45"
+      height="40"
+      viewBox="0 0 240 40"
+      enableBackground="new 0 0 240 40"
       xmlSpace="preserve"
     >
       <g>

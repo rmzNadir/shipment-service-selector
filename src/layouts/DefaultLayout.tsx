@@ -4,9 +4,9 @@ import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { ReactNode } from 'react';
 
-import { Header } from '@/components/header';
+import { Header } from '@/components';
 
-const HEADER_HEIGHT = 60;
+const HEADER_HEIGHT = 70;
 
 interface DefaultLayoutProps {
   children: ReactNode;
@@ -67,7 +67,7 @@ export const DefaultLayout = ({
       />
 
       <AppShell
-        padding="md"
+        padding="xl"
         header={<Header height={HEADER_HEIGHT} p="xs" />}
         styles={getAppShellStyles}
       >

@@ -1,16 +1,15 @@
+import { NewShipmentForm } from '@/components';
 import { DefaultLayout } from '@/layouts/DefaultLayout';
-import { useGetLabelsQuery } from '@/services/api';
 
 const Index = () => {
-  const { data, error, isLoading } = useGetLabelsQuery();
-  console.log(data, error, isLoading);
-
   return (
     <DefaultLayout
       title="Shipment Service Selector"
       description="Find the best shipping service for your needs"
     >
-      asd
+      <div className="mx-auto flex max-w-md flex-col justify-center gap-10">
+        <NewShipmentForm />
+      </div>
     </DefaultLayout>
   );
 };
