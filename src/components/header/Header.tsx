@@ -15,14 +15,15 @@ export const Header = (props: Omit<HeaderProps, 'children'>) => {
   return (
     <MantineHeader {...props}>
       <div className="flex h-full items-center justify-between px-5">
-        <a href="https://www.skydropx.com/" target="_blank" rel="noreferrer">
+        <a
+          href="https://www.skydropx.com/"
+          target="_blank"
+          rel="noreferrer"
+          className="flex items-center"
+        >
           <Logo colorScheme={colorScheme} />
         </a>
-        <ActionIcon
-          variant="default"
-          onClick={() => toggleColorScheme()}
-          size={30}
-        >
+        <ActionIcon variant="default" onClick={() => toggleColorScheme()}>
           {colorScheme === 'dark' ? <Sun size={16} /> : <MoonStars size={16} />}
         </ActionIcon>
       </div>
