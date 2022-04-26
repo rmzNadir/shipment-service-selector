@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { CreateShipment, CreateShipmentResult } from '@/types';
+import { CreateShipment, Shipment } from '@/types';
 
 import { baseCreateShipmentBody } from './baseBodies';
 
@@ -27,12 +27,12 @@ export const skydropxApi = createApi({
   tagTypes: ['Shipment'],
   endpoints: (builder) => ({
     // QUERIES
-    getShipment: builder.query<any, string>({
+    getShipment: builder.query<Shipment, string>({
       query: (id) => `shipments/${id}`,
       providesTags: (_res, _error, id) => [{ type: 'Shipment' as const, id }],
     }),
     // MUTATIONS
-    createShipment: builder.mutation<CreateShipmentResult, CreateShipment>({
+    createShipment: builder.mutation<Shipment, CreateShipment>({
       query: ({ originPostalCode, destinationPostalCode, ...rest }) => ({
         url: 'shipments',
         method: 'POST',
