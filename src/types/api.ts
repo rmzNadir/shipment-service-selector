@@ -111,11 +111,6 @@ export interface Included {
   attributes: IncludedAttributes;
 }
 
-export interface CreateShipmentResult {
-  data: Data;
-  included: Included[];
-}
-
 export interface Parcel {
   weight: number;
   distance_unit: string;
@@ -129,4 +124,9 @@ export interface CreateShipment {
   parcels: Parcel[];
   destinationPostalCode: string;
   originPostalCode: string;
+}
+
+export interface Shipment {
+  data: Data;
+  included: Included[];
 }

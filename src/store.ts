@@ -1,20 +1,26 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/dist/query';
+import { createWrapper } from 'next-redux-wrapper';
 
 import { skydropxApi } from './services/api';
 
-export const store = configureStore({
-  reducer: {
-    [skydropxApi.reducerPath]: skydropxApi.reducer,
-  },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(skydropxApi.middleware),
-});
+export const makeStore = () =>
+  configureStore({
+    reducer: {
+      [skydropxApi.reducerPath]: skydropxApi.reducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware().concat(skydropxApi.middleware),
+  });
 
 // optional, but required for refetchOnFocus/refetchOnReconnect behaviors
 // see `setupListeners` docs - takes an optional callback as the 2nd arg for customization
-setupListeners(store.dispatch);
+setupListeners(makeStore().dispatch);
 
-export type RootState = ReturnType<typeof store.getState>;
+export type AppStore = ReturnType<typeof makeStore>;
 
-export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<AppStore['getState']>;
+
+export type AppDispatch = AppStore['dispatch'];
+
+export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

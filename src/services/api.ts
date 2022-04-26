@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { CreateShipment, CreateShipmentResult } from '@/types';
+import { CreateShipment, Shipment } from '@/types';
 
 import { baseCreateShipmentBody } from './baseBodies';
 
@@ -24,11 +24,15 @@ export const skydropxApi = createApi({
       return action.payload[reducerPath];
     }
   },
+  tagTypes: ['Shipment'],
   endpoints: (builder) => ({
-    getLabels: builder.query<any, void>({
-      query: () => `labels`,
+    // QUERIES
+    getShipment: builder.query<Shipment, string>({
+      query: (id) => `shipments/${id}`,
+      providesTags: (_res, _error, id) => [{ type: 'Shipment' as const, id }],
     }),
-    createShipment: builder.mutation<CreateShipmentResult, CreateShipment>({
+    // MUTATIONS
+    createShipment: builder.mutation<Shipment, CreateShipment>({
       query: ({ originPostalCode, destinationPostalCode, ...rest }) => ({
         url: 'shipments',
         method: 'POST',
@@ -51,4 +55,11 @@ export const skydropxApi = createApi({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetLabelsQuery, useCreateShipmentMutation } = skydropxApi;
+export const {
+  useCreateShipmentMutation,
+  useGetShipmentQuery,
+  util: { getRunningOperationPromises },
+} = skydropxApi;
+
+// Export endpoints for use in SSR
+export const { getShipment } = skydropxApi.endpoints;
