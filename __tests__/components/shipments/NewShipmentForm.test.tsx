@@ -2,8 +2,9 @@ import '@testing-library/jest-dom';
 
 import { fireEvent, screen } from '@testing-library/react';
 
-import { NewShipmentForm } from '../../../src/components/shipments/newShipmentForm/NewShipmentForm';
-import { render } from '../../test-utils';
+import { NewShipmentForm } from '@/components';
+
+import { render } from '../../../__mocks__/test-utils';
 
 describe('NewShipmentForm', () => {
   it('Renders the form', () => {

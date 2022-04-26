@@ -84,7 +84,6 @@ export const NewShipmentForm = () => {
   const parcels = values.parcels.map((_, index, baseArr) => {
     const shouldRenderAddNewParcel = index === baseArr.length - 1;
     const shouldRenderRemoveParcel = baseArr.length > 1;
-    const addNewParcelOffset = shouldRenderRemoveParcel ? 20 : 10;
 
     return (
       <div key={index} className="relative mt-6">
@@ -135,40 +134,36 @@ export const NewShipmentForm = () => {
           <Text weight="bold">kg</Text>
         </div>
 
-        {shouldRenderRemoveParcel && (
-          <Tooltip
-            label="Remove item"
-            withArrow
-            className="absolute bottom-0 -right-10"
-          >
-            <ActionIcon
-              color="red"
-              variant="filled"
-              onClick={() => removeListItem('parcels', index)}
-              disabled={isLoading}
-              aria-label="remove item"
-            >
-              <Trash size={16} />
-            </ActionIcon>
-          </Tooltip>
-        )}
-        {shouldRenderAddNewParcel && (
-          <Tooltip
-            label="Add new item"
-            withArrow
-            className={`absolute bottom-0 -right-${addNewParcelOffset}`}
-          >
-            <ActionIcon
-              color="blue"
-              variant="filled"
-              onClick={() => addListItem('parcels', BASE_PARCEL)}
-              disabled={isLoading}
-              aria-label="add new item"
-            >
-              <Plus size={16} />
-            </ActionIcon>
-          </Tooltip>
-        )}
+        <div className="absolute -right-24 bottom-0 flex min-w-[4.5rem] gap-2">
+          {shouldRenderRemoveParcel && (
+            <Tooltip label="Remove item">
+              <ActionIcon
+                color="red"
+                variant="filled"
+                onClick={() => removeListItem('parcels', index)}
+                disabled={isLoading}
+                aria-label="remove item"
+                size="lg"
+              >
+                <Trash size={16} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+          {shouldRenderAddNewParcel && (
+            <Tooltip label="Add new item">
+              <ActionIcon
+                color="blue"
+                variant="filled"
+                onClick={() => addListItem('parcels', BASE_PARCEL)}
+                disabled={isLoading}
+                aria-label="add new item"
+                size="lg"
+              >
+                <Plus size={16} />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </div>
       </div>
     );
   });
@@ -180,7 +175,7 @@ export const NewShipmentForm = () => {
           required
           label="Origin postal code"
           type="number"
-          placeholder="e.g. 04400"
+          placeholder="e.g. 02900"
           {...getInputProps('originPostalCode')}
         />
 
@@ -188,7 +183,7 @@ export const NewShipmentForm = () => {
           required
           label="Destination postal code"
           type="number"
-          placeholder="e.g. 52130"
+          placeholder="e.g. 44100"
           {...getInputProps('destinationPostalCode')}
           className="mt-6"
         />
