@@ -1,9 +1,11 @@
 import {
   ActionIcon,
+  Anchor,
   Header as MantineHeader,
   HeaderProps,
   useMantineColorScheme,
 } from '@mantine/core';
+import Link from 'next/link';
 import React from 'react';
 import { MoonStars, Sun } from 'tabler-icons-react';
 
@@ -15,14 +17,11 @@ export const Header = (props: Omit<HeaderProps, 'children'>) => {
   return (
     <MantineHeader {...props}>
       <div className="flex h-full items-center justify-between px-5">
-        <a
-          href="https://www.skydropx.com/"
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center"
-        >
-          <Logo colorScheme={colorScheme} />
-        </a>
+        <Link href="/" passHref>
+          <Anchor>
+            <Logo colorScheme={colorScheme} />
+          </Anchor>
+        </Link>
         <ActionIcon variant="default" onClick={() => toggleColorScheme()}>
           {colorScheme === 'dark' ? <Sun size={16} /> : <MoonStars size={16} />}
         </ActionIcon>

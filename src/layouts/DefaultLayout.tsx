@@ -1,4 +1,4 @@
-import { AppShell, MantineTheme } from '@mantine/core';
+import { AppShell, LoadingOverlay, MantineTheme } from '@mantine/core';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
@@ -10,9 +10,10 @@ const HEADER_HEIGHT = 70;
 
 interface DefaultLayoutProps {
   children: ReactNode;
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   canonical?: string;
+  isLoading?: boolean;
 }
 
 const getAppShellStyles = (theme: MantineTheme) => ({
@@ -27,8 +28,9 @@ const getAppShellStyles = (theme: MantineTheme) => ({
 
 export const DefaultLayout = ({
   children,
-  title,
-  description,
+  title = 'Shipment Service Selector',
+  description = 'Find the best shipping service for your needs',
+  isLoading = false,
   canonical,
 }: DefaultLayoutProps) => {
   const router = useRouter();
@@ -70,7 +72,9 @@ export const DefaultLayout = ({
         padding="xl"
         header={<Header height={HEADER_HEIGHT} p="xs" />}
         styles={getAppShellStyles}
+        classNames={{ main: 'relative' }}
       >
+        <LoadingOverlay visible={isLoading} />
         {children}
       </AppShell>
     </>

@@ -4859,6 +4859,11 @@ next-redux-wrapper@^7.0.5:
   resolved "https://registry.yarnpkg.com/next-redux-wrapper/-/next-redux-wrapper-7.0.5.tgz#109cd3fe02183b18fbd094924cfcbd21262039dc"
   integrity sha512-UFXdAWG5i+GFT8+Hoqpx3GArkPh34fVWF9YoA2VSHlBzsrPtnRd7NWM6FNSYUennpommTpWJ09mu+r/1UxyIkg==
 
+next-router-mock@^0.6.7:
+  version "0.6.7"
+  resolved "https://registry.yarnpkg.com/next-router-mock/-/next-router-mock-0.6.7.tgz#8883ed81f245074462e72199fe94002cd85db5e2"
+  integrity sha512-y3yFyTkplpmvCpy1TnOuMTUQDLt2wg9RwTwvg9WcCRko4lqkBYAQM+ph5sqtNpKQ1xngDwzjPjshVBQJvhb/hg==
+
 next-seo@^5.4.0:
   version "5.4.0"
   resolved "https://registry.yarnpkg.com/next-seo/-/next-seo-5.4.0.tgz#37a7784b30b3f70cec3fa0d77f9dde5990822d24"
