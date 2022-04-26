@@ -1,4 +1,4 @@
-# Description
+# Description:
 
 -
 
@@ -6,7 +6,7 @@
 
 -
 
-# Does this PR include unit tests:
+# Does this PR include unit tests?
 
 - [ ] Yes
 - [ ] No: __Say why__
