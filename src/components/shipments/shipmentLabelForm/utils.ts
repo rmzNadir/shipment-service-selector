@@ -1,13 +1,13 @@
-import { Included, RateAttributes } from '@/types';
+import { IncludedRate } from '@/types';
 
 export type BestOptionsBase = Record<
   'fastest' | 'cheapest' | 'mostBalanced',
-  Included | undefined
+  IncludedRate | undefined
 >;
 
 export type BestOptions = Record<
   'fastest' | 'cheapest' | 'mostBalanced',
-  Included
+  IncludedRate
 >;
 
 const IGNORE_CAPITALIZING: Record<string, string> = {
@@ -27,19 +27,19 @@ export const parseLabel = (label: string) => {
   });
 };
 
-export const getTotal = (rate: Included) => {
+export const getTotal = (rate: IncludedRate) => {
   const {
     amount_local: currentLocalAmount,
     out_of_area_pricing: currentOOAAmount,
-  } = rate.attributes as RateAttributes;
+  } = rate.attributes;
 
   return parseFloat(currentLocalAmount) + parseFloat(currentOOAAmount);
 };
 
 export const getCheapest = (
   cheapest: BestOptionsBase['cheapest'],
-  current: Included
-): [Included, number] => {
+  current: IncludedRate
+): [IncludedRate, number] => {
   const currentTotalPrice = getTotal(current);
 
   if (!cheapest) {
@@ -49,7 +49,7 @@ export const getCheapest = (
   const {
     amount_local: cheapestLocalAmount,
     out_of_area_pricing: cheapestOOAAmount,
-  } = cheapest.attributes as RateAttributes;
+  } = cheapest.attributes;
 
   const cheapestTotalPrice =
     parseFloat(cheapestLocalAmount) + parseFloat(cheapestOOAAmount);
@@ -63,11 +63,11 @@ export const getCheapest = (
 
 export const getFastest = (
   fastest: BestOptionsBase['fastest'],
-  current: Included
-): [Included, number] => {
+  current: IncludedRate
+): [IncludedRate, number] => {
   const { attributes: currentAttributes } = current;
 
-  const { days: currentDays } = currentAttributes as RateAttributes;
+  const { days: currentDays } = currentAttributes;
 
   if (!fastest) {
     return [current, currentDays];
@@ -75,12 +75,12 @@ export const getFastest = (
 
   const { attributes } = fastest;
 
-  const { days: fastestDays } = attributes as RateAttributes;
+  const { days: fastestDays } = attributes;
 
   if (currentDays === fastestDays) {
     const [cheapestRate] = getCheapest(fastest, current);
 
-    const { days } = cheapestRate.attributes as RateAttributes;
+    const { days } = cheapestRate.attributes;
 
     return [cheapestRate, days];
   }
@@ -94,15 +94,15 @@ export const getFastest = (
 
 export const getMostBalanced = (
   { mostBalanced, fastest, cheapest }: BestOptionsBase,
-  current: Included
-): [Included, number | null] => {
+  current: IncludedRate
+): [IncludedRate, number | null] => {
   if (!mostBalanced || !fastest || !cheapest) {
     return [current, null];
   }
 
-  const { days: fastestDays } = fastest.attributes as RateAttributes;
-  const { days: mostBalancedDays } = mostBalanced.attributes as RateAttributes;
-  const { days: currentDays } = current.attributes as RateAttributes;
+  const { days: fastestDays } = fastest.attributes;
+  const { days: mostBalancedDays } = mostBalanced.attributes;
+  const { days: currentDays } = current.attributes;
 
   const cheapestTotal = getTotal(cheapest);
   const mostBalancedTotals = getTotal(mostBalanced);

@@ -12,7 +12,6 @@ import {
   useGetShipmentQuery,
 } from '@/services/api';
 import { wrapper } from '@/store';
-import { RateAttributes } from '@/types';
 
 const Shipment = () => {
   const { query, isFallback } = useRouter();
@@ -34,23 +33,10 @@ const Shipment = () => {
     return <Error />;
   }
 
-  if (!data?.included?.length) {
-    return <Error />;
-  }
-
-  const rates = data.included
-    .filter((item) => item.type === 'rates')
-    .sort((a, b) => {
-      const { days: aDays } = a.attributes as RateAttributes;
-      const { days: bDays } = b.attributes as RateAttributes;
-
-      return aDays - bDays;
-    });
-
   return (
     <DefaultLayout isLoading={isLoading || isFallback}>
-      <div className="mx-auto flex flex-col justify-center gap-10">
-        <ShipmentLabelForm rates={rates} />
+      <div className="mx-auto flex flex-col justify-center">
+        <ShipmentLabelForm included={data?.included} />
       </div>
     </DefaultLayout>
   );
