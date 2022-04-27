@@ -1,8 +1,10 @@
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 
 import { Error } from '@/components';
+import { ShipmentLabelForm } from '@/components/shipments/shipmentLabelForm';
+import { usePageErrorHandler } from '@/hooks';
 import { DefaultLayout } from '@/layouts/DefaultLayout';
 import {
   getRunningOperationPromises,
@@ -10,11 +12,14 @@ import {
   useGetShipmentQuery,
 } from '@/services/api';
 import { wrapper } from '@/store';
+import { RateAttributes } from '@/types';
 
 const Shipment = () => {
-  const { query, isFallback, push } = useRouter();
+  const { query, isFallback } = useRouter();
+
   const shipmentId = query?.id;
-  const { data, isLoading, error, isError } = useGetShipmentQuery(
+
+  const { data, isLoading, error } = useGetShipmentQuery(
     typeof shipmentId === 'string' ? shipmentId : skipToken,
     {
       // If the page is not yet generated, router.isFallback will be true-
@@ -23,23 +28,30 @@ const Shipment = () => {
     }
   );
 
-  // <in> check is required for correctly inferring the error type
-  const is404 = error && 'status' in error && error.status === 404;
+  const shouldShowErrorPage = usePageErrorHandler(error);
 
-  // Ensures push method gets called only after component has mounted
-  useEffect(() => {
-    if (is404) {
-      push('/404');
-    }
-  }, [is404, push]);
-
-  if (isError && !is404) {
+  if (shouldShowErrorPage) {
     return <Error />;
   }
 
+  if (!data?.included?.length) {
+    return <Error />;
+  }
+
+  const rates = data.included
+    .filter((item) => item.type === 'rates')
+    .sort((a, b) => {
+      const { days: aDays } = a.attributes as RateAttributes;
+      const { days: bDays } = b.attributes as RateAttributes;
+
+      return aDays - bDays;
+    });
+
   return (
     <DefaultLayout isLoading={isLoading || isFallback}>
-      <div>{JSON.stringify(data, null, 4)}</div>
+      <div className="mx-auto flex flex-col justify-center gap-10">
+        <ShipmentLabelForm rates={rates} />
+      </div>
     </DefaultLayout>
   );
 };
