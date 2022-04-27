@@ -21,7 +21,7 @@ const BASE_PARCEL = {
   length: '',
 };
 
-export const NewShipmentForm = () => {
+export const ShipmentForm = () => {
   const router = useRouter();
   const [createShipment, { isLoading }] = useCreateShipmentMutation();
   const {
@@ -70,6 +70,7 @@ export const NewShipmentForm = () => {
     }
 
     showNotification({
+      color: 'green',
       title: 'Success',
       message: 'Shipment successfully created! 🥳',
     });
@@ -167,6 +168,7 @@ export const NewShipmentForm = () => {
       </div>
     );
   });
+
   return (
     <>
       <Title>Shipment Details</Title>

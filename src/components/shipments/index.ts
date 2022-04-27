@@ -1,1 +1,1 @@
-export * from './newShipmentForm/NewShipmentForm';
+export * from './shipmentForm/ShipmentForm';

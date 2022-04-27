@@ -2,13 +2,13 @@ import '@testing-library/jest-dom';
 
 import { fireEvent, screen } from '@testing-library/react';
 
-import { NewShipmentForm } from '@/components';
+import { ShipmentForm } from '@/components';
 
 import { render } from '../../../__mocks__/test-utils';
 
-describe('NewShipmentForm', () => {
+describe('ShipmentForm', () => {
   it('Renders the form', () => {
-    render(<NewShipmentForm />);
+    render(<ShipmentForm />);
 
     expect(
       screen.getByRole('heading', {
@@ -25,7 +25,7 @@ describe('NewShipmentForm', () => {
 
   describe('Add new item button', () => {
     it('Adds a new item when pressed', () => {
-      render(<NewShipmentForm />);
+      render(<ShipmentForm />);
 
       const addNewItemButton = screen.getByRole('button', {
         name: /add new item/i,
@@ -41,7 +41,7 @@ describe('NewShipmentForm', () => {
 
   describe('Remove item button', () => {
     it('Removes an item when pressed', () => {
-      render(<NewShipmentForm />);
+      render(<ShipmentForm />);
 
       const addNewItemButton = screen.getByRole('button', {
         name: /add new item/i,
