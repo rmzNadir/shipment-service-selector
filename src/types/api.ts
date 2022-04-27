@@ -151,3 +151,24 @@ export interface Shipment {
   data: Data;
   included: Included[];
 }
+
+export interface LabelAttributes {
+  created_at: string;
+  updated_at: string;
+  status?: any;
+  tracking_number: string;
+  tracking_status?: any;
+  label_url: string;
+  tracking_url_provider: string;
+  rate_id: number;
+}
+
+export interface LabelData {
+  id: string;
+  type: string;
+  attributes: LabelAttributes;
+}
+
+export interface Label {
+  data: LabelData;
+}

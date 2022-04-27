@@ -1,7 +1,10 @@
 import { Button, Title } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
+import { showNotification } from '@mantine/notifications';
+import { useRouter } from 'next/router';
 import React from 'react';
 
+import { useCreateLabelMutation } from '@/services/api';
 import { Included } from '@/types';
 
 import { ShippingOptionsTable } from './ShippingOptionsTable';
@@ -15,6 +18,9 @@ export interface ShipmentLabelFormSchema {
 }
 
 export const ShipmentLabelForm = ({ rates }: ShipmentLabelFormProps) => {
+  const router = useRouter();
+  const [createLabel, { isLoading }] = useCreateLabelMutation();
+
   const form = useForm<ShipmentLabelFormSchema>({
     initialValues: {
       rate: rates?.[0]?.id ?? undefined,
@@ -22,30 +28,46 @@ export const ShipmentLabelForm = ({ rates }: ShipmentLabelFormProps) => {
   });
 
   const handleSubmit = async (formValues: ShipmentLabelFormSchema) => {
-    console.log(formValues);
-    // const res = await createShipment(shipmentData);
+    if (typeof formValues.rate !== 'string') {
+      return;
+    }
 
-    // if ('error' in res) {
-    //   showNotification({
-    //     color: 'red',
-    //     title: 'Error',
-    //     message: 'Something went wrong, please try again 😓',
-    //   });
+    const res = await createLabel(formValues.rate);
 
-    //   return;
-    // }
+    if ('error' in res) {
+      let message =
+        'Something went wrong, please try again, or choose a different provider.';
 
-    // showNotification({
-    //   color: 'green',
-    //   title: 'Success',
-    //   message: 'Shipment successfully created! 🥳',
-    // });
+      if ('data' in res.error) {
+        const { code } = res.error.data as { code: string };
 
-    // reset();
+        if (code === 'label_exists') {
+          message = 'Label already exists, please try creating a new label.';
 
-    // const shipmentId = res.data.data.id;
+          await router.push(`/`);
+        }
+      }
 
-    // router.push(`/shipments/${shipmentId}`);
+      showNotification({
+        color: 'red',
+        title: 'Error',
+        message,
+      });
+
+      return;
+    }
+
+    showNotification({
+      color: 'green',
+      title: 'Success',
+      message: 'Label successfully created! 🥳',
+    });
+
+    const { label_url: labelUrl, tracking_url_provider: trackingUrlProvider } =
+      res.data.data.attributes;
+
+    // eslint-disable-next-line no-console
+    console.log(labelUrl, trackingUrlProvider);
   };
 
   return (
@@ -55,7 +77,7 @@ export const ShipmentLabelForm = ({ rates }: ShipmentLabelFormProps) => {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <ShippingOptionsTable form={form} rates={rates} />
         <div className="mt-16 flex w-full justify-end">
-          <Button type="submit" loading={false}>
+          <Button type="submit" loading={isLoading}>
             Submit
           </Button>
         </div>

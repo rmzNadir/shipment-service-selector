@@ -31,7 +31,6 @@ export const ShipmentForm = () => {
     removeListItem,
     getListInputProps,
     addListItem,
-    reset,
   } = useForm({
     initialValues: {
       originPostalCode: '',
@@ -69,17 +68,15 @@ export const ShipmentForm = () => {
       return;
     }
 
+    const shipmentId = res.data.data.id;
+
+    await router.push(`/shipments/${shipmentId}`);
+
     showNotification({
       color: 'green',
       title: 'Success',
       message: 'Shipment successfully created! 🥳',
     });
-
-    reset();
-
-    const shipmentId = res.data.data.id;
-
-    router.push(`/shipments/${shipmentId}`);
   };
 
   const parcels = values.parcels.map((_, index, baseArr) => {

@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { CreateShipment, Shipment } from '@/types';
+import { CreateShipment, Label, Shipment } from '@/types';
 
 import { baseCreateShipmentBody } from './baseBodies';
 
@@ -50,6 +50,18 @@ export const skydropxApi = createApi({
         },
       }),
     }),
+    createLabel: builder.mutation<Label, string>({
+      query: (rateId) => ({
+        url: 'labels',
+        method: 'POST',
+        body: {
+          // We get a string from the /shipments/:id endpoint but this one
+          // requires an integer
+          rate_id: +rateId,
+          label_format: 'pdf',
+        },
+      }),
+    }),
   }),
 });
 
@@ -58,6 +70,7 @@ export const skydropxApi = createApi({
 export const {
   useCreateShipmentMutation,
   useGetShipmentQuery,
+  useCreateLabelMutation,
   util: { getRunningOperationPromises },
 } = skydropxApi;
 
