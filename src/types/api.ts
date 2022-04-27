@@ -122,6 +122,13 @@ export interface RateAttributes {
   out_of_area_pricing: string;
   total_pricing: string;
   is_ocurre: boolean;
+  rate_id: number;
+}
+
+export interface IncludedLabel {
+  id: string;
+  type: 'labels';
+  attributes: LabelAttributes;
 }
 
 export interface IncludedRate {
@@ -136,7 +143,7 @@ export interface IncludedParcel {
   attributes: ParcelAttributes;
 }
 
-export type Included = IncludedRate | IncludedParcel;
+export type Included = IncludedRate | IncludedParcel | IncludedLabel;
 
 export interface Parcel {
   weight: number;

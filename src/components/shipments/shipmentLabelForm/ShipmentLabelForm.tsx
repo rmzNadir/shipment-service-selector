@@ -2,12 +2,21 @@ import { Button, Title } from '@mantine/core';
 import { useForm } from '@mantine/hooks';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import { Empty } from '@/components';
-import { useCreateLabelMutation } from '@/services/api';
-import { Included, IncludedRate } from '@/types';
+import {
+  useCreateLabelMutation,
+  useLazyGetShipmentQuery,
+} from '@/services/api';
+import {
+  Included,
+  IncludedLabel,
+  IncludedRate,
+  LabelAttributes,
+} from '@/types';
 
+import { ResultModal } from './ResultModal';
 import { ShippingOptionsTable } from './ShippingOptionsTable';
 
 export interface ShipmentLabelFormProps {
@@ -19,8 +28,11 @@ export interface ShipmentLabelFormSchema {
 }
 
 export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
-  const router = useRouter();
-  const [createLabel, { isLoading }] = useCreateLabelMutation();
+  const { query } = useRouter();
+  const [createLabel, { isLoading, data }] = useCreateLabelMutation();
+  const [showModal, setShowModal] = useState(false);
+  const [getShipment, { data: shipmentData, isSuccess: didFetchShipment }] =
+    useLazyGetShipmentQuery();
 
   // TS can't infer discriminated unions from array's filter method
   // so we have to turn the callback into a explicit type guard as well
@@ -44,23 +56,42 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
     const res = await createLabel(formValues.rate);
 
     if ('error' in res || res.data.data.attributes.status === 'ERROR') {
-      let message =
-        'Something went wrong, please try again, or choose a different provider.';
-
       if ('error' in res && 'data' in res.error) {
         const { code } = res.error.data as { code: string };
 
         if (code === 'label_exists') {
-          message = 'Label already exists, please try creating a new label.';
+          const shipmentID = query!.id as string;
 
-          await router.push(`/`);
+          const { isSuccess, data } = await getShipment(shipmentID);
+
+          if (isSuccess && data) {
+            const { included } = data;
+            const label = included.find(
+              (item): item is IncludedLabel => item.type === 'labels'
+            );
+
+            const selectedRate = label!.attributes.rate_id;
+
+            form.setFieldValue('rate', selectedRate.toString());
+
+            showNotification({
+              color: 'blue',
+              title: 'Info',
+              message: 'Label(s) already exists',
+            });
+
+            setShowModal(true);
+
+            return;
+          }
         }
       }
 
       showNotification({
         color: 'red',
         title: 'Error',
-        message,
+        message:
+          'Something went wrong, please try again, or choose a different provider.',
       });
 
       return;
@@ -69,15 +100,27 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
     showNotification({
       color: 'green',
       title: 'Success',
-      message: 'Label successfully created! 🥳',
+      message: 'Label(s) successfully created! 🥳',
     });
 
-    const { label_url: labelUrl, tracking_url_provider: trackingUrlProvider } =
-      res.data.data.attributes;
-
-    // eslint-disable-next-line no-console
-    console.log(labelUrl, trackingUrlProvider);
+    setShowModal(true);
   };
+
+  let labelAttrs: LabelAttributes | undefined;
+
+  if (didFetchShipment && shipmentData) {
+    const label = shipmentData.included.find(
+      (item): item is IncludedLabel => item.type === 'labels'
+    );
+
+    labelAttrs = label?.attributes;
+  } else {
+    labelAttrs = data?.data.attributes;
+  }
+
+  const rate = rates?.find(
+    (rate) => rate.id === labelAttrs?.rate_id?.toString()
+  );
 
   return (
     <div className="flex flex-col gap-6">
@@ -93,8 +136,15 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
           </div>
         </form>
       ) : (
-        <Empty tryAgainRoute="/" />
+        <Empty tryAgainRoute="/" message="No providers available." />
       )}
+
+      <ResultModal
+        opened={showModal}
+        onClose={() => setShowModal(false)}
+        label={labelAttrs}
+        rate={rate}
+      />
     </div>
   );
 };

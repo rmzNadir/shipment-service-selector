@@ -71,6 +71,7 @@ export const {
   useCreateShipmentMutation,
   useGetShipmentQuery,
   useCreateLabelMutation,
+  useLazyGetShipmentQuery,
   util: { getRunningOperationPromises },
 } = skydropxApi;
 

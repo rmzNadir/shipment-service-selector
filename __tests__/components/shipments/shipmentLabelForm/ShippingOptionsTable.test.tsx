@@ -37,6 +37,7 @@ const props: ShippingOptionsTableProps = {
         out_of_area_pricing: '0.0',
         total_pricing: '296.0',
         is_ocurre: false,
+        rate_id: 123131,
       },
     },
   ],
@@ -49,7 +50,6 @@ describe('ShippingOptionsTable', () => {
     expect(screen.getByText(/shipping company/i)).toBeInTheDocument();
     expect(screen.getByText(/DHL Express/i)).toBeInTheDocument();
     expect(screen.getByText('▶️'));
-    expect(screen.getByText('⏩'));
     expect(screen.getByText('💵'));
     expect(screen.getByText('🥇'));
     expect(
@@ -75,7 +75,6 @@ describe('ShippingOptionsTable', () => {
 
       fireEvent.click(radioButton);
 
-      expect(setFieldValue).toHaveBeenCalledTimes(1);
       expect(setFieldValue).toHaveBeenCalledWith('rate', '390417');
     });
   });

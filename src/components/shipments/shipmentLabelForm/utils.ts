@@ -112,10 +112,10 @@ export const getMostBalanced = (
 
   const mostBalancedBalanceIndex =
     topOptionsBalanceIndex /
-    (mostBalancedTotals + (mostBalancedDays * 100) / fastestDays);
+    (mostBalancedTotals + (mostBalancedDays * 500) / fastestDays);
 
   const currentBalanceIndex =
-    topOptionsBalanceIndex / (currentTotal + (currentDays * 100) / fastestDays);
+    topOptionsBalanceIndex / (currentTotal + (currentDays * 500) / fastestDays);
 
   if (currentBalanceIndex > mostBalancedBalanceIndex) {
     return [current, currentBalanceIndex];

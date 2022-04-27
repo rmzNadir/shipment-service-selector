@@ -118,7 +118,7 @@ export const ShippingOptionsTable = ({
                           : undefined
                       }
                     >
-                      {parseLabel(`${provider} ${serviceLevelName}`)}
+                      {parseLabel(`${provider} ${serviceLevelName} `)}
                       {bestOptions &&
                         renderRateValueRatings(
                           rate,

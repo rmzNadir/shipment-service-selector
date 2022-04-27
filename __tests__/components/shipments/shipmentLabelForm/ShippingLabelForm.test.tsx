@@ -8,6 +8,8 @@ import { render } from '../../../../__mocks__/test-utils';
 
 const onSubmit = jest.fn();
 
+jest.mock('next/dist/client/router', () => require('next-router-mock'));
+
 jest.mock('@mantine/hooks', () => ({
   ...jest.requireActual('@mantine/hooks'),
   useForm() {
@@ -43,6 +45,7 @@ const props: ShipmentLabelFormProps = {
         out_of_area_pricing: '0.0',
         total_pricing: '296.0',
         is_ocurre: false,
+        rate_id: 390411,
       },
     },
   ],
