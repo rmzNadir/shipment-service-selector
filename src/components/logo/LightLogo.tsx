@@ -9,9 +9,9 @@ export const LightLogo = () => {
       x="0px"
       y="0px"
       width="240"
-      height="40"
-      viewBox="0 0 240 40"
-      enableBackground="new 0 0 240 40"
+      height="50"
+      viewBox="0 0 240 35"
+      enableBackground="new 0 0 240 35"
       xmlSpace="preserve"
     >
       <g>
