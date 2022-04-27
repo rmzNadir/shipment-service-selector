@@ -10,6 +10,11 @@ global.Headers = Headers;
 global.Request = Request;
 global.Response = Response;
 global.AbortController = AbortController;
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}));
 
 beforeAll(() => server.listen({ onUnhandledRequest: 'error' }));
 afterEach(() => server.resetHandlers());
