@@ -47,7 +47,7 @@ export const ShippingOptionsTable = ({
       options.mostBalanced = getMostBalanced(options, current)[0];
 
       return options;
-    }, bestOptionBase);
+    }, bestOptionBase) as BestOptions;
   }, [sortedRates]);
 
   useEffect(() => {
@@ -55,6 +55,17 @@ export const ShippingOptionsTable = ({
     // Unavoidable, useForm hook's return value isn't memoized
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bestOptions]);
+
+  const hasMultipleFastRates = sortedRates.some(
+    ({ attributes: { days }, id }) => {
+      const {
+        id: fastestID,
+        attributes: { days: fastestDays },
+      } = bestOptions.fastest;
+
+      return days === fastestDays && id !== fastestID;
+    }
+  );
 
   return (
     <ScrollArea>
@@ -111,7 +122,8 @@ export const ShippingOptionsTable = ({
                       {bestOptions &&
                         renderRateValueRatings(
                           rate,
-                          bestOptions as BestOptions
+                          bestOptions,
+                          hasMultipleFastRates
                         )}
                     </Text>
                   </td>
@@ -132,7 +144,8 @@ export const ShippingOptionsTable = ({
 
 const renderRateValueRatings = (
   { id, attributes }: IncludedRate,
-  bestOptions: BestOptions
+  bestOptions: BestOptions,
+  hasMultipleFastRates: boolean
 ) => {
   const ratings: ReactNode[] = [];
 
@@ -148,17 +161,18 @@ const renderRateValueRatings = (
       </Tooltip>
     );
 
-  if (fastest.id === id)
-    ratings.push(
+  if (fastest.id === id && hasMultipleFastRates) {
+    ratings[0] = (
       <Tooltip
         key={`fastest-${id}`}
         wrapLines
-        label="Fastest shipping time with the lowest price"
+        label="Fastest shipping time with the lowest price compared to other options with the same shipping time"
         width={220}
       >
         ⏩
       </Tooltip>
     );
+  }
 
   if (cheapest.id === id)
     ratings.push(

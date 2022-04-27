@@ -108,15 +108,16 @@ export const getMostBalanced = (
   const mostBalancedTotals = getTotal(mostBalanced);
   const currentTotal = getTotal(current);
 
-  const topOptionsBalanceIndex = fastestDays * cheapestTotal;
+  const topOptionsBalanceIndex = cheapestTotal + fastestDays;
 
   const mostBalancedBalanceIndex =
-    (mostBalancedTotals * mostBalancedDays) / topOptionsBalanceIndex;
+    topOptionsBalanceIndex /
+    (mostBalancedTotals + (mostBalancedDays * 100) / fastestDays);
 
   const currentBalanceIndex =
-    (currentTotal * currentDays) / topOptionsBalanceIndex;
+    topOptionsBalanceIndex / (currentTotal + (currentDays * 100) / fastestDays);
 
-  if (currentBalanceIndex < mostBalancedBalanceIndex) {
+  if (currentBalanceIndex > mostBalancedBalanceIndex) {
     return [current, currentBalanceIndex];
   }
 
