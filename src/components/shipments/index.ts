@@ -1,1 +1,2 @@
-export * from './newShipmentForm/NewShipmentForm';
+export * from './shipmentForm/ShipmentForm';
+export * from './shipmentLabelForm';
