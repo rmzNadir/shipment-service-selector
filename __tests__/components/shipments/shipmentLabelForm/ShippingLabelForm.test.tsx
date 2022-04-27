@@ -16,12 +16,13 @@ jest.mock('@mantine/hooks', () => ({
       values: {
         rate: '390417',
       },
+      setFieldValue: jest.fn(),
     };
   },
 }));
 
 const props: ShipmentLabelFormProps = {
-  rates: [
+  included: [
     {
       id: '390417',
       type: 'rates',

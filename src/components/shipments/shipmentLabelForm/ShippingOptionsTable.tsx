@@ -1,9 +1,9 @@
 /* eslint-disable prefer-destructuring */
 import { Radio, ScrollArea, Table, Text, Tooltip } from '@mantine/core';
 import { UseForm } from '@mantine/hooks/lib/use-form/use-form';
-import React, { ReactNode, useMemo } from 'react';
+import React, { ReactNode, useEffect, useMemo } from 'react';
 
-import { Included, RateAttributes } from '@/types';
+import { IncludedRate } from '@/types';
 
 import type { ShipmentLabelFormSchema } from './ShipmentLabelForm';
 import {
@@ -16,7 +16,7 @@ import {
 } from './utils';
 
 export interface ShippingOptionsTableProps {
-  rates: Included[];
+  rates: IncludedRate[];
   form: UseForm<ShipmentLabelFormSchema>;
 }
 
@@ -25,6 +25,12 @@ export const ShippingOptionsTable = ({
   form,
 }: ShippingOptionsTableProps) => {
   const { setFieldValue, values } = form;
+  const sortedRates = rates.sort((a, b) => {
+    const { days: aDays } = a.attributes;
+    const { days: bDays } = b.attributes;
+
+    return aDays - bDays;
+  });
 
   const bestOptions = useMemo(() => {
     const bestOptionBase: BestOptionsBase = {
@@ -33,7 +39,7 @@ export const ShippingOptionsTable = ({
       mostBalanced: undefined,
     };
 
-    return rates?.reduce((options, current) => {
+    return sortedRates.reduce((options, current) => {
       const { cheapest, fastest } = options;
 
       options.cheapest = getCheapest(cheapest, current)[0];
@@ -42,7 +48,13 @@ export const ShippingOptionsTable = ({
 
       return options;
     }, bestOptionBase);
-  }, [rates]);
+  }, [sortedRates]);
+
+  useEffect(() => {
+    setFieldValue('rate', bestOptions.mostBalanced?.id);
+    // Unavoidable, useForm hook's return value isn't memoized
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bestOptions]);
 
   return (
     <ScrollArea>
@@ -60,7 +72,7 @@ export const ShippingOptionsTable = ({
             </tr>
           </thead>
           <tbody>
-            {rates.map((rate) => {
+            {sortedRates.map((rate) => {
               const { id, attributes } = rate;
               const {
                 provider,
@@ -70,7 +82,7 @@ export const ShippingOptionsTable = ({
                 total_pricing: totalPricing,
                 amount_local: localPricing,
                 currency_local: currencyLocal,
-              } = attributes as RateAttributes;
+              } = attributes;
 
               return (
                 <tr
@@ -119,15 +131,15 @@ export const ShippingOptionsTable = ({
 };
 
 const renderRateValueRatings = (
-  { id, attributes }: Included,
+  { id, attributes }: IncludedRate,
   bestOptions: BestOptions
 ) => {
   const ratings: ReactNode[] = [];
 
   const { fastest, cheapest, mostBalanced } = bestOptions;
 
-  const { days } = fastest.attributes as RateAttributes;
-  const { days: currentDays } = attributes as RateAttributes;
+  const { days } = fastest.attributes;
+  const { days: currentDays } = attributes;
 
   if (currentDays === days)
     ratings.push(

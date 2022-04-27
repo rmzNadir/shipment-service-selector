@@ -124,13 +124,19 @@ export interface RateAttributes {
   is_ocurre: boolean;
 }
 
-export type IncludedAttributes = ParcelAttributes | RateAttributes;
-
-export interface Included {
+export interface IncludedRate {
   id: string;
-  type: string;
-  attributes: IncludedAttributes;
+  type: 'rates';
+  attributes: RateAttributes;
 }
+
+export interface IncludedParcel {
+  id: string;
+  type: 'parcel';
+  attributes: ParcelAttributes;
+}
+
+export type Included = IncludedRate | IncludedParcel;
 
 export interface Parcel {
   weight: number;
