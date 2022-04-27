@@ -28,6 +28,7 @@ const RATE_A: IncludedRate = {
     out_of_area_pricing: '0.0',
     total_pricing: '134.0',
     is_ocurre: false,
+    rate_id: 123131,
   },
 };
 
@@ -51,6 +52,7 @@ const RATE_B: IncludedRate = {
     out_of_area_pricing: '0.0',
     total_pricing: '201.0',
     is_ocurre: false,
+    rate_id: 123131,
   },
 };
 
@@ -75,6 +77,7 @@ const BEST_OPTIONS: BestOptions = {
       out_of_area_pricing: '0.0',
       total_pricing: '228.0',
       is_ocurre: false,
+      rate_id: 123131,
     },
   },
   fastest: {
@@ -97,6 +100,7 @@ const BEST_OPTIONS: BestOptions = {
       out_of_area_pricing: '0.0',
       total_pricing: '228.0',
       is_ocurre: false,
+      rate_id: 123131,
     },
   },
   cheapest: {
@@ -119,6 +123,7 @@ const BEST_OPTIONS: BestOptions = {
       out_of_area_pricing: '0.0',
       total_pricing: '128.0',
       is_ocurre: false,
+      rate_id: 123131,
     },
   },
 };
@@ -172,7 +177,7 @@ describe('Shipment label form utils', () => {
       );
 
       expect(mostBalanced).toBe(BEST_OPTIONS.mostBalanced);
-      expect(balanceIndex).toBe(0.39634146341463417);
+      expect(balanceIndex).toBe(0.17857142857142858);
     });
   });
 });
