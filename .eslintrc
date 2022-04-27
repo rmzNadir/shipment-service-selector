@@ -65,7 +65,10 @@
         "react-hooks/rules-of-hooks": "error",
         "react-hooks/exhaustive-deps": "warn",
         "import/no-cycle": [2, { "maxDepth": 1 }],
-        "global-require": "off"
+        "global-require": "off",
+        "@typescript-eslint/no-use-before-define": ["off"],
+        "no-param-reassign": "off",
+        "@typescript-eslint/no-shadow": ["off"]
       }
     }
   ]
