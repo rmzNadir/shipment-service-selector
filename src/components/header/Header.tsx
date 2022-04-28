@@ -1,22 +1,39 @@
 import {
   ActionIcon,
   Anchor,
+  Burger,
   Header as MantineHeader,
-  HeaderProps,
+  HeaderProps as MantineHeaderProps,
+  MediaQuery,
   useMantineColorScheme,
+  useMantineTheme,
 } from '@mantine/core';
 import Link from 'next/link';
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { MoonStars, Sun } from 'tabler-icons-react';
 
 import { Logo } from '../logo';
 
-export const Header = (props: Omit<HeaderProps, 'children'>) => {
+interface HeaderProps extends Omit<MantineHeaderProps, 'children'> {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  isOpen: boolean;
+}
+
+export const Header = ({ setIsOpen, isOpen, ...props }: HeaderProps) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const { colors } = useMantineTheme();
 
   return (
     <MantineHeader {...props}>
-      <div className="flex h-full items-center justify-between px-5">
+      <div className="flex h-full items-center justify-between gap-4 px-4">
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+          <Burger
+            opened={isOpen}
+            onClick={() => setIsOpen((o) => !o)}
+            size="sm"
+            color={colors.gray[6]}
+          />
+        </MediaQuery>
         <Link href="/" passHref aria-label="homepage">
           <Anchor>
             <span className="!absolute m-0 h-[1px] w-[1px] overflow-hidden whitespace-nowrap border-0 p-0">
@@ -25,6 +42,7 @@ export const Header = (props: Omit<HeaderProps, 'children'>) => {
             <Logo colorScheme={colorScheme} />
           </Anchor>
         </Link>
+
         <ActionIcon
           variant="default"
           onClick={() => toggleColorScheme()}

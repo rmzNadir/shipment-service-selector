@@ -84,83 +84,89 @@ export const ShipmentForm = () => {
     const shouldRenderRemoveParcel = baseArr.length > 1;
 
     return (
-      <div key={index} className="relative mt-6">
-        <div className="flex items-center gap-5 ">
-          <div className="flex items-end gap-2">
-            <TextInput
-              placeholder="e.g. 10"
-              required
-              type="number"
-              label="Width"
-              {...getListInputProps('parcels', index, 'width')}
-            />
-            <Text weight="bold">cm</Text>
-          </div>
+      <div key={index} className="relative mt-6 flex-col items-end gap-4">
+        <div className="flex items-center justify-between">
+          <Text weight="bold">#{index + 1}</Text>
+          <div className="flex items-center gap-2">
+            {shouldRenderRemoveParcel && (
+              <Tooltip label="Remove item">
+                <ActionIcon
+                  color="red"
+                  variant="filled"
+                  onClick={() => removeListItem('parcels', index)}
+                  disabled={isLoading}
+                  aria-label="remove item"
+                >
+                  <Trash size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
 
-          <div className="flex items-end gap-2">
-            <TextInput
-              placeholder="e.g. 10"
-              required
-              type="number"
-              label="Height"
-              {...getListInputProps('parcels', index, 'height')}
-            />
-            <Text weight="bold">cm</Text>
-          </div>
-
-          <div className="flex items-end gap-2">
-            <TextInput
-              placeholder="e.g. 10"
-              required
-              type="number"
-              label="Length"
-              itemType="number"
-              {...getListInputProps('parcels', index, 'length')}
-            />
-            <Text weight="bold">cm</Text>
+            {shouldRenderAddNewParcel && (
+              <Tooltip label="Add new item">
+                <ActionIcon
+                  color="blue"
+                  variant="filled"
+                  onClick={() => addListItem('parcels', BASE_PARCEL)}
+                  disabled={isLoading}
+                  aria-label="add new item"
+                >
+                  <Plus size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
           </div>
         </div>
-        <div className="mt-2 flex items-end gap-2">
-          <TextInput
-            placeholder="e.g. 10"
-            required
-            type="number"
-            label="Weight"
-            className="w-full"
-            {...getListInputProps('parcels', index, 'weight')}
-          />
-          <Text weight="bold">kg</Text>
-        </div>
+        <div className="w-full">
+          <div className="items-center gap-5 sm:flex">
+            <div className="flex items-end gap-2">
+              <TextInput
+                placeholder="e.g. 10"
+                required
+                type="number"
+                label="Width"
+                className="w-full"
+                {...getListInputProps('parcels', index, 'width')}
+              />
+              <Text weight="bold">cm</Text>
+            </div>
 
-        <div className="absolute -right-24 bottom-0 flex min-w-[4.5rem] gap-2">
-          {shouldRenderRemoveParcel && (
-            <Tooltip label="Remove item">
-              <ActionIcon
-                color="red"
-                variant="filled"
-                onClick={() => removeListItem('parcels', index)}
-                disabled={isLoading}
-                aria-label="remove item"
-                size="lg"
-              >
-                <Trash size={16} />
-              </ActionIcon>
-            </Tooltip>
-          )}
-          {shouldRenderAddNewParcel && (
-            <Tooltip label="Add new item">
-              <ActionIcon
-                color="blue"
-                variant="filled"
-                onClick={() => addListItem('parcels', BASE_PARCEL)}
-                disabled={isLoading}
-                aria-label="add new item"
-                size="lg"
-              >
-                <Plus size={16} />
-              </ActionIcon>
-            </Tooltip>
-          )}
+            <div className="mt-2 flex  items-end gap-2 sm:mt-0">
+              <TextInput
+                placeholder="e.g. 10"
+                required
+                type="number"
+                label="Height"
+                className="w-full"
+                {...getListInputProps('parcels', index, 'height')}
+              />
+              <Text weight="bold">cm</Text>
+            </div>
+
+            <div className="mt-2 flex items-end gap-2 sm:mt-0">
+              <TextInput
+                placeholder="e.g. 10"
+                required
+                type="number"
+                label="Length"
+                itemType="number"
+                className="w-full"
+                {...getListInputProps('parcels', index, 'length')}
+              />
+              <Text weight="bold">cm</Text>
+            </div>
+          </div>
+          <div className="mt-2 flex items-end gap-2">
+            <TextInput
+              placeholder="e.g. 10"
+              required
+              type="number"
+              label="Weight"
+              className="w-full"
+              {...getListInputProps('parcels', index, 'weight')}
+            />
+            <Text weight="bold">kg</Text>
+          </div>
         </div>
       </div>
     );
@@ -168,7 +174,7 @@ export const ShipmentForm = () => {
 
   return (
     <>
-      <Title>Shipment Details</Title>
+      <Title className="text-center sm:text-left">Shipment Details</Title>
       <form onSubmit={onSubmit(handleSubmit)}>
         <TextInput
           required
@@ -194,8 +200,12 @@ export const ShipmentForm = () => {
           {parcels}
         </div>
 
-        <div className="mt-16 flex w-full justify-end">
-          <Button type="submit" loading={isLoading}>
+        <div className="mt-12 flex w-full justify-end">
+          <Button
+            type="submit"
+            loading={isLoading}
+            className="w-full sm:w-auto"
+          >
             Submit
           </Button>
         </div>
