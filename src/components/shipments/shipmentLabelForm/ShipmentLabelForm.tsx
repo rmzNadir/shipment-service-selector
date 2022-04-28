@@ -144,7 +144,7 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
       )}
 
       <ResultModal
-        opened={showModal}
+        isOpen={showModal}
         onClose={() => setShowModal(false)}
         label={labelAttrs}
         rate={rate}
