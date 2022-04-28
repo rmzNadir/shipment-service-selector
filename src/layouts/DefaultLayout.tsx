@@ -1,8 +1,15 @@
-import { AppShell, LoadingOverlay, MantineTheme } from '@mantine/core';
+import {
+  AppShell,
+  LoadingOverlay,
+  MantineTheme,
+  Navbar,
+  useMantineTheme,
+} from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 
 import { Header } from '@/components';
 
@@ -34,6 +41,14 @@ export const DefaultLayout = ({
   canonical,
 }: DefaultLayoutProps) => {
   const router = useRouter();
+  const [isOpen, setIsOpen] = useState(false);
+  const { breakpoints } = useMantineTheme();
+  const isSmallScreen = useMediaQuery(`(max-width: ${breakpoints.sm}px)`);
+
+  useEffect(() => {
+    // reset open state on screen size change
+    setIsOpen(false);
+  }, [isSmallScreen]);
 
   return (
     <>
@@ -70,9 +85,27 @@ export const DefaultLayout = ({
 
       <AppShell
         padding="xl"
-        header={<Header height={HEADER_HEIGHT} p="xs" />}
+        fixed
+        header={
+          <Header
+            height={HEADER_HEIGHT}
+            p="xs"
+            setIsOpen={setIsOpen}
+            isOpen={isOpen}
+          />
+        }
         styles={getAppShellStyles}
         classNames={{ main: 'relative' }}
+        navbar={
+          <Navbar
+            p="md"
+            hiddenBreakpoint="sm"
+            hidden={!isOpen}
+            width={{ sm: 200, lg: 300 }}
+          >
+            {/* //asd */}
+          </Navbar>
+        }
       >
         <LoadingOverlay visible={isLoading} />
         {children}

@@ -25,6 +25,7 @@ export const ShippingOptionsTable = ({
   form,
 }: ShippingOptionsTableProps) => {
   const { setFieldValue, values } = form;
+
   const sortedRates = rates.sort((a, b) => {
     const { days: aDays } = a.attributes;
     const { days: bDays } = b.attributes;
@@ -104,6 +105,11 @@ export const ShippingOptionsTable = ({
                 >
                   <td>
                     <Radio
+                      // Focuses best option on page load && allows submit on enter after
+                      // clicking on a row
+                      ref={(itemRef) =>
+                        itemRef && values.rate === id && itemRef.focus()
+                      }
                       value={id}
                       checked={values.rate === id}
                       readOnly

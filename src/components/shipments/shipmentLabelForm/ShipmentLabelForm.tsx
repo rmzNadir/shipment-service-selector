@@ -123,14 +123,18 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
   );
 
   return (
-    <div className="flex flex-col gap-6">
-      <Title>Shipping options</Title>
+    <div className="flex flex-col gap-10">
+      <Title className="text-center sm:text-left">Shipping options</Title>
 
       {rates?.length ? (
         <form onSubmit={form.onSubmit(handleSubmit)}>
           <ShippingOptionsTable form={form} rates={rates} />
-          <div className="mt-16 flex w-full justify-end">
-            <Button type="submit" loading={isLoading}>
+          <div className="mt-12 flex w-full justify-end">
+            <Button
+              type="submit"
+              loading={isLoading}
+              className="w-full sm:w-auto"
+            >
               Submit
             </Button>
           </div>
