@@ -4,8 +4,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
 
-const TerserPlugin = require('terser-webpack-plugin');
-
 module.exports = withBundleAnalyzer({
   eslint: {
     dirs: ['.'],
@@ -25,29 +23,5 @@ module.exports = withBundleAnalyzer({
         permanent: true,
       },
     ];
-  },
-
-  webpack: (config) => {
-    // keep_classnames is required to workaround node-fetch Expected signal to be an instanceof AbortSignal
-    config.optimization = {
-      minimize: true,
-      minimizer: [
-        new TerserPlugin({
-          parallel: true,
-          terserOptions: {
-            mangle: false,
-            sourceMap: true,
-            keep_classnames: /AbortSignal/,
-            keep_fnames: /AbortSignal/,
-            output: {
-              beautify: true,
-              indent_level: 1,
-            },
-          },
-        }),
-      ],
-    };
-
-    return config;
   },
 });
