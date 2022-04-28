@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
@@ -6,10 +7,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 module.exports = withBundleAnalyzer({
   eslint: {
     dirs: ['.'],
-  },
-  i18n: {
-    locales: ['en'],
-    defaultLocale: 'en',
   },
   poweredByHeader: false,
   trailingSlash: false,

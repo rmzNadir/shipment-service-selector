@@ -5,11 +5,14 @@ import AbortController from 'abort-controller';
 import { fetch, Headers, Request, Response } from 'cross-fetch';
 import { server } from './__mocks__/server.ts';
 
-global.fetch = fetch;
-global.Headers = Headers;
-global.Request = Request;
-global.Response = Response;
-global.AbortController = AbortController;
+Object.assign(globalThis, {
+  fetch,
+  Headers,
+  Request,
+  Response,
+  AbortController,
+});
+
 global.ResizeObserver = jest.fn().mockImplementation(() => ({
   observe: jest.fn(),
   unobserve: jest.fn(),
