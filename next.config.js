@@ -30,13 +30,11 @@ module.exports = withBundleAnalyzer({
   webpack: (config) => {
     // keep_classnames is required to workaround node-fetch Expected signal to be an instanceof AbortSignal
     config.optimization = {
+      minimize: true,
       minimizer: [
         new TerserPlugin({
-          cache: true,
           parallel: true,
-          sourceMap: true,
           terserOptions: {
-            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
             mangle: false,
             sourceMap: true,
             keep_classnames: /AbortSignal/,
