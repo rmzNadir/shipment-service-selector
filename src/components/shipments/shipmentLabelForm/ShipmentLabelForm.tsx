@@ -123,7 +123,7 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
   );
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-10">
       <Title className="text-center sm:text-left">Shipping options</Title>
 
       {rates?.length ? (
