@@ -1,2 +1,5 @@
 @tailwind utilities;
 
+html, body {
+  overflow: hidden; 
+}
