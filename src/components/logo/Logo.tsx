@@ -11,7 +11,7 @@ interface LogoProps {
 
 export const Logo = ({ colorScheme }: LogoProps) => {
   // tailwindcss sm breakpoint
-  const isExtraSmallScreen = useMediaQuery(`(max-width: 640px)`);
+  const isExtraSmallScreen = useMediaQuery(`(max-width: 640px)`, true);
 
   if (colorScheme === 'dark') {
     return <LightLogo isExtraSmallScreen={isExtraSmallScreen} />;

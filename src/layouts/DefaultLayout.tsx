@@ -2,7 +2,6 @@ import {
   AppShell,
   LoadingOverlay,
   MantineTheme,
-  Navbar,
   useMantineTheme,
 } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
@@ -11,7 +10,7 @@ import { useRouter } from 'next/router';
 import { NextSeo } from 'next-seo';
 import { ReactNode, useEffect, useState } from 'react';
 
-import { Header } from '@/components';
+import { Header, Navbar } from '@/components';
 
 const HEADER_HEIGHT = 70;
 
@@ -95,20 +94,17 @@ export const DefaultLayout = ({
           />
         }
         styles={getAppShellStyles}
-        classNames={{ main: 'relative' }}
         navbar={
           <Navbar
-            p="md"
-            hiddenBreakpoint="sm"
-            hidden={!isOpen}
-            width={{ sm: 200, lg: 300 }}
-          >
-            {/* //asd */}
-          </Navbar>
+            visible={!isSmallScreen || isOpen}
+            onClose={() => setIsOpen(false)}
+          />
         }
       >
-        <LoadingOverlay visible={isLoading} />
-        {children}
+        <div className="relative">
+          <LoadingOverlay visible={isLoading} />
+          {children}
+        </div>
       </AppShell>
     </>
   );

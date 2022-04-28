@@ -14,7 +14,7 @@ import { MoonStars, Sun } from 'tabler-icons-react';
 
 import { Logo } from '../logo';
 
-interface HeaderProps extends Omit<MantineHeaderProps, 'children'> {
+export interface HeaderProps extends Omit<MantineHeaderProps, 'children'> {
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   isOpen: boolean;
 }
