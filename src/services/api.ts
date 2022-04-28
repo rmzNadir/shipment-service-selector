@@ -72,7 +72,7 @@ export const {
   useGetShipmentQuery,
   useCreateLabelMutation,
   useLazyGetShipmentQuery,
-  util: { getRunningOperationPromises },
+  util: { getRunningOperationPromises, resetApiState },
 } = skydropxApi;
 
 // Export endpoints for use in SSR

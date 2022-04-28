@@ -12,7 +12,7 @@ module.exports = withBundleAnalyzer({
     defaultLocale: 'en',
   },
   poweredByHeader: false,
-  trailingSlash: true,
+  trailingSlash: false,
   basePath: '',
   // The starter code load resources from `public` folder with `router.basePath` in React components.
   // So, the source code is "basePath-ready".

@@ -32,6 +32,7 @@ export const Header = ({ setIsOpen, isOpen, ...props }: HeaderProps) => {
             onClick={() => setIsOpen((o) => !o)}
             size="sm"
             color={colors.gray[6]}
+            aria-label="open navbar"
           />
         </MediaQuery>
         <Link href="/" passHref aria-label="homepage">
