@@ -19,9 +19,9 @@ export const skydropxApi = createApi({
     },
   }),
   // eslint-disable-next-line consistent-return
-  extractRehydrationInfo(action) {
+  extractRehydrationInfo(action, { reducerPath }) {
     if (action.type === HYDRATE) {
-      return action.payload.api;
+      return action.payload[reducerPath];
     }
   },
   tagTypes: ['Shipment'],
@@ -72,7 +72,7 @@ export const {
   useGetShipmentQuery,
   useCreateLabelMutation,
   useLazyGetShipmentQuery,
-  util: { getRunningOperationPromises },
+  util: { getRunningOperationPromises, resetApiState },
 } = skydropxApi;
 
 // Export endpoints for use in SSR
