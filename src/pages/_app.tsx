@@ -47,6 +47,9 @@ export function App(props: AppProps & { colorScheme: ColorScheme }) {
 
 const AppWithRedux = wrapper.withRedux(App);
 
+// opts us out of atomatic static optimization (SSG default is replaced by SSR)
+// which impacts performance a little bit but allows proper color scheme to load
+// without flashing https://stackoverflow.com/questions/71400494/flash-of-unstyled-content-fouc-for-nextjs-using-mantine
 AppWithRedux.getInitialProps = ({
   ctx,
 }: {

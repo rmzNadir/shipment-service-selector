@@ -9,6 +9,7 @@ import {
 import { formList, useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
+import { useEffect, useRef } from 'react';
 import { Plus, Trash } from 'tabler-icons-react';
 
 import { useCreateShipmentMutation } from '@/services/api';
@@ -38,6 +39,14 @@ export const ShipmentForm = () => {
       parcels: formList([BASE_PARCEL]),
     },
   });
+  const firstInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (firstInputRef.current) {
+      // autoFocus prop on input isn't working
+      firstInputRef.current.focus();
+    }
+  }, [firstInputRef]);
 
   const handleSubmit = async ({ parcels, ...otherValues }: typeof values) => {
     const parsedParcels = parcels.map((parcel) => {
@@ -84,8 +93,8 @@ export const ShipmentForm = () => {
     const shouldRenderRemoveParcel = baseArr.length > 1;
 
     return (
-      <div key={index} className="relative mt-6 flex-col items-end gap-4">
-        <div className="flex items-center justify-between">
+      <div key={index} className="relative mt-4 flex flex-col ">
+        <div className="flex min-h-[2rem] items-end justify-between">
           <Text weight="bold">#{index + 1}</Text>
           <div className="flex items-center gap-2">
             {shouldRenderRemoveParcel && (
@@ -98,20 +107,6 @@ export const ShipmentForm = () => {
                   aria-label="remove item"
                 >
                   <Trash size={16} />
-                </ActionIcon>
-              </Tooltip>
-            )}
-
-            {shouldRenderAddNewParcel && (
-              <Tooltip label="Add new item">
-                <ActionIcon
-                  color="blue"
-                  variant="filled"
-                  onClick={() => addListItem('parcels', BASE_PARCEL)}
-                  disabled={isLoading}
-                  aria-label="add new item"
-                >
-                  <Plus size={16} />
                 </ActionIcon>
               </Tooltip>
             )}
@@ -168,6 +163,19 @@ export const ShipmentForm = () => {
             <Text weight="bold">kg</Text>
           </div>
         </div>
+        {shouldRenderAddNewParcel && (
+          <Tooltip label="Add new item" className="mt-6 self-end">
+            <ActionIcon
+              color="blue"
+              variant="filled"
+              onClick={() => addListItem('parcels', BASE_PARCEL)}
+              disabled={isLoading}
+              aria-label="add new item"
+            >
+              <Plus size={16} />
+            </ActionIcon>
+          </Tooltip>
+        )}
       </div>
     );
   });
@@ -177,6 +185,7 @@ export const ShipmentForm = () => {
       <Title className="text-center sm:text-left">Shipment Details</Title>
       <form onSubmit={onSubmit(handleSubmit)}>
         <TextInput
+          ref={firstInputRef}
           required
           label="Origin postal code"
           type="number"

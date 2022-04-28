@@ -29,7 +29,7 @@ const Shipment = () => {
 
   const shouldShowErrorPage = usePageErrorHandler(error);
 
-  if (shouldShowErrorPage) {
+  if ((!isFallback || !isLoading) && shouldShowErrorPage) {
     return <Error />;
   }
 
