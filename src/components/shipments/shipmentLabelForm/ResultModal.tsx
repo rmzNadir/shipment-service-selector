@@ -15,26 +15,27 @@ import { IncludedRate, LabelAttributes } from '@/types';
 
 import { getTotal, parseLabel } from './utils';
 
-interface SuccessModalProps {
-  opened: boolean;
+export interface ResultModalProps {
+  isOpen: boolean;
   onClose(): void;
   label?: LabelAttributes;
   rate?: IncludedRate;
 }
 
 export const ResultModal = ({
-  opened,
+  isOpen,
   onClose,
   label,
   rate,
-}: SuccessModalProps) => {
+}: ResultModalProps) => {
   return (
     <Modal
-      opened={opened}
+      opened={isOpen}
       onClose={onClose}
       centered
       title={<Title order={3}>Shipping label(s)</Title>}
       classNames={{ modal: 'mt-48' }}
+      closeButtonLabel="close modal"
     >
       <Divider />
       <div className="mt-6">
@@ -50,7 +51,7 @@ const Content = ({
   label,
   rate,
   onClose,
-}: Required<Omit<SuccessModalProps, 'opened'>>) => {
+}: Required<Omit<ResultModalProps, 'isOpen'>>) => {
   const [copiedValue, setCopiedValue] = useState('');
   const {
     provider,
@@ -92,7 +93,10 @@ const Content = ({
           label={copiedValue === trackingNumber ? 'Copied!' : 'Copy'}
           color={copiedValue === trackingNumber ? 'green' : undefined}
         >
-          <ActionIcon onClick={() => copyToClipboard(trackingNumber)}>
+          <ActionIcon
+            onClick={() => copyToClipboard(trackingNumber)}
+            aria-label="copy tracking number"
+          >
             <Copy size={16} />
           </ActionIcon>
         </Tooltip>
@@ -105,7 +109,10 @@ const Content = ({
           label={copiedValue === trackingURL ? 'Copied!' : 'Copy'}
           color={copiedValue === trackingURL ? 'green' : undefined}
         >
-          <ActionIcon onClick={() => copyToClipboard(trackingURL)}>
+          <ActionIcon
+            onClick={() => copyToClipboard(trackingURL)}
+            aria-label="copy tracking url"
+          >
             <Copy size={16} />
           </ActionIcon>
         </Tooltip>
@@ -114,7 +121,12 @@ const Content = ({
         <Text>Label</Text>
 
         <Tooltip position="right" label="Open label document">
-          <ActionIcon component="a" href={labelURL} target="_blank">
+          <ActionIcon
+            component="a"
+            href={labelURL}
+            target="_blank"
+            aria-label="open label document in another window"
+          >
             <ExternalLink size={16} />
           </ActionIcon>
         </Tooltip>
