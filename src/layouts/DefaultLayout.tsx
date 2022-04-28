@@ -29,7 +29,6 @@ const getAppShellStyles = (theme: MantineTheme) => ({
         ? theme.colors.dark[8]
         : theme.colors.gray[0],
     height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-    overflow: 'auto',
   },
 });
 
@@ -85,7 +84,11 @@ export const DefaultLayout = ({
 
       <AppShell
         padding="xl"
-        className="overflow-hidden"
+        classNames={{
+          root: 'overflow-hidden',
+          body: 'overflow-hidden',
+          main: 'overflow-auto',
+        }}
         fixed
         header={
           <Header
