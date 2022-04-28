@@ -67,6 +67,7 @@ const NavbarLink = ({ icon, color, label, href, onClick }: NavbarLinkProps) => {
       <UnstyledButton
         onClick={onClick}
         component="a"
+        aria-label={label}
         sx={(theme) => ({
           display: 'block',
           width: '100%',
