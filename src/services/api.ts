@@ -19,9 +19,9 @@ export const skydropxApi = createApi({
     },
   }),
   // eslint-disable-next-line consistent-return
-  extractRehydrationInfo(action, { reducerPath }) {
+  extractRehydrationInfo(action) {
     if (action.type === HYDRATE) {
-      return action.payload[reducerPath];
+      return action.payload.api;
     }
   },
   tagTypes: ['Shipment'],

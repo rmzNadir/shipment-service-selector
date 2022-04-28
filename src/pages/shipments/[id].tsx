@@ -31,7 +31,7 @@ const Shipment = () => {
 
   console.log(shouldShowErrorPage, isFallback, isLoading, error);
 
-  if ((!isFallback || !isLoading) && shouldShowErrorPage) {
+  if (shouldShowErrorPage) {
     return <Error />;
   }
 
