@@ -85,6 +85,7 @@ export const DefaultLayout = ({
 
       <AppShell
         padding="xl"
+        className="overflow-hidden"
         fixed
         header={
           <Header
@@ -102,7 +103,7 @@ export const DefaultLayout = ({
           />
         }
       >
-        <div className="relative ">
+        <div className="relative">
           <LoadingOverlay visible={isLoading} />
           {children}
         </div>
