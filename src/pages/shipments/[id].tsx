@@ -29,8 +29,6 @@ const Shipment = () => {
 
   const shouldShowErrorPage = usePageErrorHandler(error);
 
-  console.log(shouldShowErrorPage, isFallback, isLoading, error);
-
   if (shouldShowErrorPage) {
     return <Error />;
   }
