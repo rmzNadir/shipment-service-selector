@@ -33,7 +33,6 @@ module.exports = withBundleAnalyzer({
       // minimize: true,
       minimizer: [
         new TerserPlugin({
-          cache: true,
           parallel: true,
           terserOptions: {
             // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
