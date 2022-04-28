@@ -1,16 +1,3 @@
-/* eslint-disable import/order */
-/* eslint-disable import/first */
-import AbortController from 'abort-controller';
-import { fetch, Headers, Request, Response } from 'cross-fetch';
-
-Object.assign(globalThis, {
-  fetch,
-  Headers,
-  Request,
-  Response,
-  AbortController,
-});
-
 import '../styles/global.css';
 
 import {

@@ -32,21 +32,23 @@ module.exports = withBundleAnalyzer({
     config.optimization = {
       minimizer: [
         new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
           terserOptions: {
+            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
             mangle: false,
             sourceMap: true,
-            compress: false,
-            keep_classnames: true,
-            keep_fnames: true,
+            keep_classnames: /AbortSignal/,
+            keep_fnames: /AbortSignal/,
             output: {
-              comments: false,
+              beautify: true,
+              indent_level: 1,
             },
           },
         }),
       ],
     };
-
-    config.optimization.minimize = false;
 
     return config;
   },
