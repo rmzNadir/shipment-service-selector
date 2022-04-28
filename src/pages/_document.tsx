@@ -12,7 +12,7 @@ export default class _Document extends Document {
   // eslint-disable-next-line class-methods-use-this
   render() {
     return (
-      <Html>
+      <Html lang="en">
         <Head />
         <body>
           <Main />
