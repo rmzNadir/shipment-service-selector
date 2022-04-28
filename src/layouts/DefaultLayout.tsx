@@ -29,6 +29,7 @@ const getAppShellStyles = (theme: MantineTheme) => ({
         ? theme.colors.dark[8]
         : theme.colors.gray[0],
     height: `calc(100vh - ${HEADER_HEIGHT}px)`,
+    overflow: 'auto',
   },
 });
 
@@ -101,7 +102,7 @@ export const DefaultLayout = ({
           />
         }
       >
-        <div className="relative">
+        <div className="relative ">
           <LoadingOverlay visible={isLoading} />
           {children}
         </div>
