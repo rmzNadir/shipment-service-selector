@@ -29,23 +29,24 @@ module.exports = withBundleAnalyzer({
 
   webpack: (config) => {
     // keep_classnames is required to workaround node-fetch Expected signal to be an instanceof AbortSignal
-    config.plugins.delete('uglify');
-    config.plugin('uglify').use(TerserPlugin, [
-      {
-        terserOptions: {
-          mangle: false,
-          sourceMap: true,
-          compress: false,
-          keep_classnames: true,
-          keep_fnames: true,
-          output: {
-            comments: false,
+    config.optimization = {
+      minimizer: [
+        new TerserPlugin({
+          terserOptions: {
+            mangle: false,
+            sourceMap: true,
+            compress: false,
+            keep_classnames: true,
+            keep_fnames: true,
+            output: {
+              comments: false,
+            },
           },
-        },
-      },
-    ]);
+        }),
+      ],
+    };
 
-    config.optimization.minimize(false);
+    config.optimization.minimize = false;
 
     return config;
   },
