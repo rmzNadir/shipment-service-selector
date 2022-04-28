@@ -1,7 +1,10 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable import/no-extraneous-dependencies */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 });
+
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = withBundleAnalyzer({
   eslint: {
@@ -22,5 +25,31 @@ module.exports = withBundleAnalyzer({
         permanent: true,
       },
     ];
+  },
+
+  webpack: (config) => {
+    config.optimization = {
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true, // Must be set to true if using source-maps in production
+          terserOptions: {
+            // https://github.com/webpack-contrib/terser-webpack-plugin#terseroptions
+            mangle: false,
+            sourceMap: true,
+            // compress: false,
+            keep_classnames: /AbortSignal/,
+            keep_fnames: /AbortSignal/,
+            output: {
+              beautify: true,
+              indent_level: 1,
+            },
+          },
+        }),
+      ],
+    };
+
+    return config;
   },
 });
