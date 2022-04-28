@@ -9,7 +9,6 @@ import { DefaultLayout } from '@/layouts/DefaultLayout';
 import {
   getRunningOperationPromises,
   getShipment,
-  resetApiState,
   useGetShipmentQuery,
 } from '@/services/api';
 import { wrapper } from '@/store';
@@ -57,8 +56,6 @@ export const getServerSideProps = wrapper.getServerSideProps(
       }
 
       await Promise.all(getRunningOperationPromises());
-
-      store.dispatch(resetApiState());
 
       return {
         props: {},
