@@ -11,6 +11,8 @@ export const usePageErrorHandler = (error: Error) => {
   // <in> check is required for correctly inferring the error type
   const is404 = error && 'status' in error && error.status === 404;
 
+  console.log(error);
+
   // Ensures push method gets called only after component has mounted
   useEffect(() => {
     if (is404) {
