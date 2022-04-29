@@ -78,8 +78,6 @@ export const DefaultLayout = ({
       <AppShell
         padding="xl"
         classNames={{
-          root: 'overflow-hidden',
-          body: 'overflow-hidden',
           main: 'overflow-auto',
         }}
         fixed
