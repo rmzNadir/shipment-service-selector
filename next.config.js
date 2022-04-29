@@ -18,8 +18,8 @@ module.exports = withBundleAnalyzer({
   async redirects() {
     return [
       {
-        source: '/shipments',
-        destination: '/',
+        source: '/',
+        destination: '/new-shipment',
         permanent: true,
       },
     ];

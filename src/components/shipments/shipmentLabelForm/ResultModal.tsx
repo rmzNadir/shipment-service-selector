@@ -136,7 +136,7 @@ const Content = ({
         <Button fullWidth color="red" onClick={onClose}>
           Close
         </Button>
-        <Link href="/" passHref>
+        <Link href="/new-shipment" passHref>
           <Button fullWidth component="a">
             Create another shipment
           </Button>

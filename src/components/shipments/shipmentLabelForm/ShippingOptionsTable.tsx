@@ -1,5 +1,12 @@
 /* eslint-disable prefer-destructuring */
-import { Radio, ScrollArea, Table, Text, Tooltip } from '@mantine/core';
+import {
+  LoadingOverlay,
+  Radio,
+  ScrollArea,
+  Table,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import { UseForm } from '@mantine/hooks/lib/use-form/use-form';
 import React, { ReactNode, useEffect, useMemo } from 'react';
 
@@ -18,11 +25,13 @@ import {
 export interface ShippingOptionsTableProps {
   rates: IncludedRate[];
   form: UseForm<ShipmentLabelFormSchema>;
+  isLoading: boolean;
 }
 
 export const ShippingOptionsTable = ({
   rates,
   form,
+  isLoading,
 }: ShippingOptionsTableProps) => {
   const { setFieldValue, values } = form;
 
@@ -70,7 +79,9 @@ export const ShippingOptionsTable = ({
 
   return (
     <ScrollArea>
-      <div className="overflow-x-auto whitespace-nowrap">
+      <div className="relative overflow-x-auto whitespace-nowrap">
+        <LoadingOverlay visible={isLoading} />
+
         <Table highlightOnHover horizontalSpacing="md" verticalSpacing="md">
           <thead>
             <tr>

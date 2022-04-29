@@ -21,15 +21,20 @@ import { ShippingOptionsTable } from './ShippingOptionsTable';
 
 export interface ShipmentLabelFormProps {
   included?: Included[];
+  isLoading: boolean;
 }
 
 export interface ShipmentLabelFormSchema {
   rate?: string;
 }
 
-export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
+export const ShipmentLabelForm = ({
+  included,
+  isLoading,
+}: ShipmentLabelFormProps) => {
   const { query } = useRouter();
-  const [createLabel, { isLoading, data }] = useCreateLabelMutation();
+  const [createLabel, { isLoading: isCreatingLabel, data }] =
+    useCreateLabelMutation();
   const [showModal, setShowModal] = useState(false);
   const [getShipment, { data: shipmentData, isSuccess: didFetchShipment }] =
     useLazyGetShipmentQuery();
@@ -128,11 +133,16 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
 
       {rates?.length ? (
         <form onSubmit={form.onSubmit(handleSubmit)}>
-          <ShippingOptionsTable form={form} rates={rates} />
+          <ShippingOptionsTable
+            form={form}
+            rates={rates}
+            isLoading={isLoading}
+          />
           <div className="mt-12 flex w-full justify-end">
             <Button
               type="submit"
-              loading={isLoading}
+              loading={isCreatingLabel}
+              disabled={isLoading}
               className="w-full sm:w-auto"
             >
               Submit
@@ -140,7 +150,10 @@ export const ShipmentLabelForm = ({ included }: ShipmentLabelFormProps) => {
           </div>
         </form>
       ) : (
-        <Empty tryAgainRoute="/" message="No providers available." />
+        <Empty
+          tryAgainRoute="/new-shipment"
+          message="No providers available, try creating a new shipment"
+        />
       )}
 
       <ResultModal

@@ -1,7 +1,7 @@
 import { ShipmentForm } from '@/components';
 import { DefaultLayout } from '@/layouts/DefaultLayout';
 
-const Index = () => {
+const NewShipment = () => {
   return (
     <DefaultLayout>
       <div className="mx-auto flex max-w-xl flex-col justify-center gap-10">
@@ -11,4 +11,4 @@ const Index = () => {
   );
 };
 
-export default Index;
+export default NewShipment;
