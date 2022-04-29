@@ -9,7 +9,7 @@ export const useHorizontalSwipe = <E extends HTMLElement>(
   callback: () => void,
   config?: UseHorizontalSwipe
 ) => {
-  const { isRightSwipe = false, minSwipeDistancePercentage = 40 } =
+  const { isRightSwipe = false, minSwipeDistancePercentage = 30 } =
     config ?? {};
 
   const [touchStart, setTouchStart] = useState<number>();
