@@ -49,6 +49,7 @@ const props: ShipmentLabelFormProps = {
       },
     },
   ],
+  isLoading: false,
 };
 
 describe('ShipmentLabelForm', () => {
