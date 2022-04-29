@@ -1,9 +1,4 @@
-import {
-  AppShell,
-  LoadingOverlay,
-  MantineTheme,
-  useMantineTheme,
-} from '@mantine/core';
+import { AppShell, MantineTheme, useMantineTheme } from '@mantine/core';
 import { useMediaQuery } from '@mantine/hooks';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -19,7 +14,6 @@ interface DefaultLayoutProps {
   title?: string;
   description?: string;
   canonical?: string;
-  isLoading?: boolean;
 }
 
 const getAppShellStyles = (theme: MantineTheme) => ({
@@ -36,7 +30,6 @@ export const DefaultLayout = ({
   children,
   title = 'Shipment Service Selector',
   description = 'Find the best shipping service for your needs',
-  isLoading = false,
   canonical,
 }: DefaultLayoutProps) => {
   const router = useRouter();
@@ -84,6 +77,9 @@ export const DefaultLayout = ({
 
       <AppShell
         padding="xl"
+        classNames={{
+          main: 'overflow-auto',
+        }}
         fixed
         header={
           <Header
@@ -101,10 +97,7 @@ export const DefaultLayout = ({
           />
         }
       >
-        <div className="relative">
-          <LoadingOverlay visible={isLoading} />
-          {children}
-        </div>
+        {children}
       </AppShell>
     </>
   );
