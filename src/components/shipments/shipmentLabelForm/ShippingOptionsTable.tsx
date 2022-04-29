@@ -8,10 +8,11 @@ import {
   Tooltip,
 } from '@mantine/core';
 import { UseForm } from '@mantine/hooks/lib/use-form/use-form';
-import React, { ReactNode, useEffect, useMemo } from 'react';
+import React, { ReactNode, useEffect, useMemo, useState } from 'react';
 
 import { IncludedRate } from '@/types';
 
+import { ColumnSorter, Direction } from './ColumnSorter';
 import type { ShipmentLabelFormSchema } from './ShipmentLabelForm';
 import {
   BestOptions,
@@ -19,6 +20,7 @@ import {
   getCheapest,
   getFastest,
   getMostBalanced,
+  getTotal,
   parseLabel,
 } from './utils';
 
@@ -28,19 +30,42 @@ export interface ShippingOptionsTableProps {
   isLoading: boolean;
 }
 
+interface SortOptions {
+  days: Direction;
+  total: Direction;
+}
+
 export const ShippingOptionsTable = ({
   rates,
   form,
   isLoading,
 }: ShippingOptionsTableProps) => {
   const { setFieldValue, values } = form;
-
-  const sortedRates = rates.sort((a, b) => {
-    const { days: aDays } = a.attributes;
-    const { days: bDays } = b.attributes;
-
-    return aDays - bDays;
+  const [sortOptions, setSortOptions] = useState<SortOptions>({
+    days: 'ASC',
+    total: 'ASC',
   });
+
+  const sortedRates = useMemo(
+    () =>
+      rates.sort((a, b) => {
+        const { days: aDays } = a.attributes;
+        const { days: bDays } = b.attributes;
+
+        const aTotal = getTotal(a);
+        const bTotal = getTotal(b);
+
+        const { days, total } = sortOptions;
+
+        const totalComparison =
+          total === 'ASC' ? aTotal - bTotal : bTotal - aTotal;
+
+        const daysComparison = days === 'ASC' ? aDays - bDays : bDays - aDays;
+
+        return daysComparison || totalComparison;
+      }),
+    [rates, sortOptions]
+  );
 
   const bestOptions = useMemo(() => {
     const bestOptionBase: BestOptionsBase = {
@@ -77,6 +102,16 @@ export const ShippingOptionsTable = ({
     }
   );
 
+  const handleChangeDirection = (
+    column: keyof SortOptions,
+    direction: Direction
+  ) => {
+    setSortOptions((sO) => ({
+      ...sO,
+      [column]: direction,
+    }));
+  };
+
   return (
     <ScrollArea>
       <div className="relative overflow-x-auto whitespace-nowrap">
@@ -87,10 +122,30 @@ export const ShippingOptionsTable = ({
             <tr>
               <th></th>
               <th>Shipping company</th>
-              <th className="!text-right">Estimated days until delivery</th>
+              <th>
+                <div className="flex items-center justify-end gap-2">
+                  <ColumnSorter
+                    onChange={(direction) =>
+                      handleChangeDirection('days', direction)
+                    }
+                    direction={sortOptions.days}
+                  />
+                  Estimated days until delivery
+                </div>
+              </th>
               <th className="!text-right">Out of area pricing</th>
               <th className="!text-right">Local area pricing</th>
-              <th className="!text-right">Total</th>
+              <th className="!text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <ColumnSorter
+                    onChange={(direction) =>
+                      handleChangeDirection('total', direction)
+                    }
+                    direction={sortOptions.total}
+                  />
+                  Total
+                </div>
+              </th>
               <th>Currency</th>
             </tr>
           </thead>
