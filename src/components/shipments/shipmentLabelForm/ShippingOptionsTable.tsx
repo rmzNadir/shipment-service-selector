@@ -1,6 +1,5 @@
 /* eslint-disable prefer-destructuring */
 import {
-  ActionIcon,
   LoadingOverlay,
   Radio,
   ScrollArea,
@@ -10,10 +9,10 @@ import {
 } from '@mantine/core';
 import { UseForm } from '@mantine/hooks/lib/use-form/use-form';
 import React, { ReactNode, useEffect, useMemo, useState } from 'react';
-import { ArrowDown, ArrowUp } from 'tabler-icons-react';
 
 import { IncludedRate } from '@/types';
 
+import { ColumnSorter, Direction } from './ColumnSorter';
 import type { ShipmentLabelFormSchema } from './ShipmentLabelForm';
 import {
   BestOptions,
@@ -31,10 +30,9 @@ export interface ShippingOptionsTableProps {
   isLoading: boolean;
 }
 
-type SortOption = 'ASC' | 'DESC';
 interface SortOptions {
-  days: SortOption;
-  total: SortOption;
+  days: Direction;
+  total: Direction;
 }
 
 export const ShippingOptionsTable = ({
@@ -104,6 +102,16 @@ export const ShippingOptionsTable = ({
     }
   );
 
+  const handleChangeDirection = (
+    column: keyof SortOptions,
+    direction: Direction
+  ) => {
+    setSortOptions((sO) => ({
+      ...sO,
+      [column]: direction,
+    }));
+  };
+
   return (
     <ScrollArea>
       <div className="relative overflow-x-auto whitespace-nowrap">
@@ -116,22 +124,12 @@ export const ShippingOptionsTable = ({
               <th>Shipping company</th>
               <th>
                 <div className="flex items-center justify-end gap-2">
-                  <ActionIcon
-                    color="violet"
-                    variant="filled"
-                    onClick={() =>
-                      setSortOptions((sO) => ({
-                        ...sO,
-                        days: sO.days === 'ASC' ? 'DESC' : 'ASC',
-                      }))
+                  <ColumnSorter
+                    onChange={(direction) =>
+                      handleChangeDirection('days', direction)
                     }
-                  >
-                    {sortOptions.days === 'DESC' ? (
-                      <ArrowDown size={16} />
-                    ) : (
-                      <ArrowUp size={16} />
-                    )}
-                  </ActionIcon>
+                    direction={sortOptions.days}
+                  />
                   Estimated days until delivery
                 </div>
               </th>
@@ -139,22 +137,12 @@ export const ShippingOptionsTable = ({
               <th className="!text-right">Local area pricing</th>
               <th className="!text-right">
                 <div className="flex items-center justify-end gap-2">
-                  <ActionIcon
-                    color="violet"
-                    variant="filled"
-                    onClick={() =>
-                      setSortOptions((sO) => ({
-                        ...sO,
-                        total: sO.total === 'ASC' ? 'DESC' : 'ASC',
-                      }))
+                  <ColumnSorter
+                    onChange={(direction) =>
+                      handleChangeDirection('total', direction)
                     }
-                  >
-                    {sortOptions.total === 'DESC' ? (
-                      <ArrowDown size={16} />
-                    ) : (
-                      <ArrowUp size={16} />
-                    )}
-                  </ActionIcon>
+                    direction={sortOptions.total}
+                  />
                   Total
                 </div>
               </th>
