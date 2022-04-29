@@ -39,7 +39,6 @@ export const useHorizontalSwipe = <E extends HTMLElement>(
     if (isRightSwipe) {
       isSwipe = distance < -minSwipeDistance;
     }
-
     if (isSwipe) {
       callback();
     }

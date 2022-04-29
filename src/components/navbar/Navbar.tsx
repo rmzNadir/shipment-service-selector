@@ -7,7 +7,7 @@ import {
 } from '@mantine/core';
 import Link from 'next/link';
 import React, { ReactNode } from 'react';
-import { Plus } from 'tabler-icons-react';
+import { Box, Plus } from 'tabler-icons-react';
 
 import { useHorizontalSwipe } from '@/hooks/useHorizontalSwipe';
 
@@ -16,7 +16,13 @@ const LINKS = [
     icon: <Plus size={16} />,
     color: 'blue',
     label: 'Create shipment',
-    href: '/',
+    href: '/new-shipment',
+  },
+  {
+    icon: <Box size={16} />,
+    color: 'yellow',
+    label: 'Shipments',
+    href: '/shipments',
   },
 ];
 

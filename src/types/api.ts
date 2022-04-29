@@ -48,7 +48,7 @@ export interface ConsignmentNoteProductClassData {
 }
 
 export interface ConsignmentNoteProductClass {
-  data: ConsignmentNoteProductClassData;
+  data: ConsignmentNoteProductClassData | null;
 }
 
 export interface ConsignmentNotePackagingData {
@@ -60,7 +60,7 @@ export interface ConsignmentNotePackagingData {
 }
 
 export interface ConsignmentNotePackaging {
-  data: ConsignmentNotePackagingData;
+  data: ConsignmentNotePackagingData | null;
 }
 
 export interface Relationships {
@@ -74,7 +74,7 @@ export interface Relationships {
   consignment_note_packaging: ConsignmentNotePackaging;
 }
 
-export interface Data {
+export interface ShipmentData {
   id: string;
   type: string;
   attributes: Attributes;
@@ -161,7 +161,12 @@ export interface CreateShipment {
 }
 
 export interface Shipment {
-  data: Data;
+  data: ShipmentData;
+  included: Included[];
+}
+
+export interface Shipments {
+  data: ShipmentData[];
   included: Included[];
 }
 
@@ -184,4 +189,9 @@ export interface LabelData {
 
 export interface Label {
   data: LabelData;
+}
+
+export interface ShipmentsParams {
+  page: number;
+  perPage?: number;
 }

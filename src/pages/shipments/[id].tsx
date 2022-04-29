@@ -1,4 +1,3 @@
-import { LoadingOverlay } from '@mantine/core';
 import { skipToken } from '@reduxjs/toolkit/dist/query';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -36,10 +35,8 @@ const Shipment = () => {
 
   return (
     <DefaultLayout>
-      <div className="relative mx-auto flex flex-col justify-center">
-        <LoadingOverlay visible={isLoading} />
-
-        <ShipmentLabelForm included={data?.included} />
+      <div className="mx-auto flex flex-col justify-center">
+        <ShipmentLabelForm included={data?.included} isLoading={isLoading} />
       </div>
     </DefaultLayout>
   );

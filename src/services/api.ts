@@ -1,7 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { HYDRATE } from 'next-redux-wrapper';
 
-import { CreateShipment, Label, Shipment } from '@/types';
+import {
+  CreateShipment,
+  Label,
+  Shipment,
+  Shipments,
+  ShipmentsParams,
+} from '@/types';
 
 import { baseCreateShipmentBody } from './baseBodies';
 
@@ -30,6 +36,16 @@ export const skydropxApi = createApi({
     getShipment: builder.query<Shipment, string>({
       query: (id) => `shipments/${id}`,
       providesTags: (_res, _error, id) => [{ type: 'Shipment' as const, id }],
+    }),
+    getShipments: builder.query<Shipments, ShipmentsParams>({
+      query: ({ page }) => ({
+        url: 'shipments',
+        method: 'GET',
+        params: { page, per_page: 10 },
+      }),
+      providesTags: ['Shipment'],
+      // Tried to access response headers to get total amount of shipments but for
+      // some reason they're not here, maybe it's a CORS issue?
     }),
     // MUTATIONS
     createShipment: builder.mutation<Shipment, CreateShipment>({
@@ -72,8 +88,9 @@ export const {
   useGetShipmentQuery,
   useCreateLabelMutation,
   useLazyGetShipmentQuery,
+  useGetShipmentsQuery,
   util: { getRunningOperationPromises, resetApiState },
 } = skydropxApi;
 
 // Export endpoints for use in SSR
-export const { getShipment } = skydropxApi.endpoints;
+export const { getShipment, getShipments } = skydropxApi.endpoints;
